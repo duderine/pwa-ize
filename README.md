@@ -3,7 +3,7 @@
 
 Transform any website into a PWA that feels like a regular mobile application.
 
-**➙ https://derlin.github.io/pwa-ize ✨**
+**➙ https://duderine.github.io/pwa-ize ✨**
 
 
 ## What is it ?
