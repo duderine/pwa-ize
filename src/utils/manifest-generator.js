@@ -25,7 +25,7 @@ const ManifestGenerator = {
         theme_color: "#000000",
         description: `${title}`,
         display: "standalone",
-        display_override: ["standalone"],
+        display_override: ["window-controls-overlay", "standalone", "minimal-ui"],
         orientation: "any",
         scope: "/",
         name: `${title}`,
