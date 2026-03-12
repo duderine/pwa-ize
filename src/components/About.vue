@@ -19,7 +19,7 @@
         </p>
         <p>
           For more information, have a look at the
-          <a href="https://github.com/derlin/pwa-ize" target="_blank">code</a>, and feel free to
+          <a href="https://github.com/duderine/pwa-ize" target="_blank">code</a>, and feel free to
           give it a <i class="material-icons tiny">star</i> !
         </p>
       </div>
