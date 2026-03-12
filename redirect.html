@@ -2,12 +2,13 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    <title>PWA-ize Redirect</title>
+    <meta name="color-scheme" content="dark light">
+    <title>Redirecting...</title>
     <style>
       * {
         margin: 0;
@@ -20,9 +21,10 @@
         overflow: hidden;
         background: #000;
       }
-      /* Esconde qualquer barra de status ou UI */
+      /* Esconde qualquer barra residual */
       .status-bar, .minimal-ui, header, nav, footer,
-      [class*="status"], [class*="nav"], [class*="header"] {
+      [class*="status"], [class*="nav"], [class*="header"],
+      .browser-ui, .chrome-bar {
         display: none !important;
       }
       #message {
@@ -35,12 +37,14 @@
   </head>
 
   <body>
-    <div id="message">Redirecionando...</div>
+    <div id="message">Loading...</div>
     <script type="text/javascript">
       const params = new URLSearchParams(window.location.search);
       try {
         const url = params.get("url");
         if (!url) throw new Error("URL vazia");
+        
+        // Usa replace pra não criar histórico
         window.location.replace(new URL(url).href);
       } catch (error) {
         document.getElementById("message").innerHTML = 
