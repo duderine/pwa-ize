@@ -1,7 +1,7 @@
 {
   "background_color":"#111528",
   "description":"List of clickable websites, PWA-enabled",
-  "display":"fullscreen",
+  "display":"standalone",
   "name":"PWA-ize shortcuts",
   "short_name":"PWA-ize Shortcuts",
   "start_url":"/shortcuts.html",
