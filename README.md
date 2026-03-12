@@ -83,6 +83,3 @@ which will automatically do a redirect on load.
 
 That's it.
 
-<div align="center">
-⇨ https://derlin.github.io/pwa-ize/ ⇦
-</div>
