@@ -21,9 +21,11 @@ const ManifestGenerator = {
     title = title?.trim() || url.hostname
     const json = JSON.stringify(
       {
-        background_color: "white",
-        description: `${title} as standalone app (PWA)`,
-        display: "fullscreen",
+        background_color: "#000000",
+        theme_color: "#000000",
+        description: `${title}`,
+        display: "standalone",
+        display_override: ["standalone"],
         name: `${title}`,
         short_name: `${title}`,
         // try as many sizes as possible
