@@ -26,6 +26,8 @@ const ManifestGenerator = {
         description: `${title}`,
         display: "standalone",
         display_override: ["standalone"],
+        orientation: "any",
+        scope: "/",
         name: `${title}`,
         short_name: `${title}`,
         // try as many sizes as possible
