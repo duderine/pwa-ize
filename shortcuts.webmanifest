@@ -1,24 +1,11 @@
 {
   "name": "PWA-ize Shortcuts",
   "short_name": "PWA-ize",
-  "description": "List of clickable websites, PWA-enabled",
   "start_url": "/pwa-ize/shortcuts.html",
-  "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
-  "background_color": "#000000",
-  "theme_color": "#000000",
-  "prefer_related_applications": true,
+  "background_color": "#111528",
   "icons": [
-    {
-      "src": "icons/splash-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml"
-    },
-    {
-      "src": "icons/splash-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml"
-    }
+    { "src": "icons/splash-192.svg", "sizes": "192x192" },
+    { "src": "icons/splash-512.svg", "sizes": "512x512" }
   ]
 }
