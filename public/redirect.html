@@ -7,39 +7,38 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const targetUrl = params.get("url");
-        
-        if (targetUrl) {
-            const urlObj = new URL(targetUrl);
-            const siteName = params.get("name") || urlObj.hostname.replace('www.', '');
-            document.title = siteName;
+        const urlObj = targetUrl ? new URL(targetUrl) : null;
+        const siteName = urlObj ? urlObj.hostname.replace('www.', '') : "PWA-ize";
 
-            // MANIFESTO DINÂMICO
+        // Ajusta o título para o atalho ter o nome certo
+        document.title = siteName;
+
+        if (targetUrl) {
+            // Manifesto Dinâmico Injetado
             const manifest = {
                 "name": siteName,
                 "short_name": siteName,
-                "start_url": window.location.href, 
-                "scope": "/", 
+                "start_url": window.location.href, // O atalho abre aqui
                 "display": "standalone",
+                "scope": window.location.pathname, // Isola o escopo para não brigar com o index
                 "display_override": ["window-controls-overlay", "standalone"],
                 "background_color": "#000000",
                 "theme_color": "#000000",
                 "icons": [{
-                    "src": "https://www.google.com/s2/favicons?sz=128&domain=" + urlObj.hostname,
+                    "src": `https://www.google.com/s2/favicons?sz=128&domain=${urlObj.hostname}`,
                     "sizes": "128x128",
                     "type": "image/png"
                 }]
             };
 
             const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-            const manifestURL = URL.createObjectURL(blob);
             const link = document.createElement('link');
             link.rel = 'manifest';
-            link.href = manifestURL;
+            link.href = URL.createObjectURL(blob);
             document.head.appendChild(link);
 
-            // LOGICA DE REDIRECIONAMENTO
-            // Se já abriu como PWA (standalone), vai direto pro alvo
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            // Se abrir como App instalado, pula a tela e vai pro site alvo
+            if (window.matchMedia('(display-mode: standalone)').matches) {
                 window.location.replace(targetUrl);
             }
         }
@@ -49,24 +48,23 @@
         }
     </script>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
-        .box { padding: 20px; border: 1px solid #333; border-radius: 12px; }
-        .loader { border: 3px solid #333; border-top: 3px solid #fff; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 15px auto; }
+        body { background: #000; color: #fff; font-family: system-ui, -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
+        .card { padding: 30px; border: 1px solid #222; border-radius: 20px; background: #0a0a0a; }
+        .loader { border: 2px solid #333; border-top: 2px solid #fff; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 15px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .install-hint { color: #888; font-size: 0.9em; margin-top: 10px; }
+        .step { font-size: 0.9em; color: #aaa; margin: 10px 0; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <div id="site-info">Preparando atalho...</div>
+    <div class="card">
+        <div id="info">Configurando atalho...</div>
         <div class="loader"></div>
-        <p class="install-hint">1. Clique nos três pontos (menu)<br>2. "Instalar Aplicativo/Adicionar à tela inicial"</p>
-        <p style="font-size: 0.7em; color: #444;">Após instalar, abra pelo ícone na tela inicial.</p>
+        <div class="step">1. Abra o menu do navegador</div>
+        <div class="step">2. Clique em <b>"Instalar aplicativo"</b></div>
+        <div style="font-size: 0.7em; color: #444; margin-top: 20px;">Após instalar, use o ícone criado na tela inicial.</div>
     </div>
     <script>
-        if (targetUrl) {
-            document.getElementById('site-info').innerText = "Atalho para: " + new URL(targetUrl).hostname;
-        }
+        if (urlObj) document.getElementById('info').innerText = "Atalho para: " + siteName;
     </script>
 </body>
 </html>
