@@ -1,18 +1,24 @@
 {
-  "background_color":"#111528",
-  "description":"List of clickable websites, PWA-enabled",
-  "display":"standalone",
-  "name":"PWA-ize shortcuts",
-  "short_name":"PWA-ize Shortcuts",
-  "start_url":"/shortcuts.html",
-  "icons":[
+  "name": "PWA-ize Shortcuts",
+  "short_name": "PWA-ize",
+  "description": "List of clickable websites, PWA-enabled",
+  "start_url": "/pwa-ize/shortcuts.html",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "prefer_related_applications": true,
+  "icons": [
     {
-      "src":"icons/splash-192.svg",
-      "sizes":"192x192"
+      "src": "icons/splash-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
     },
     {
-      "src":"icons/splash-512.svg",
-      "sizes":"512x512"
+      "src": "icons/splash-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
     }
   ]
 }
