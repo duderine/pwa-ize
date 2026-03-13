@@ -1,13 +1,7 @@
-const CACHE_NAME = 'pwa-ize-v1';
-self.addEventListener('install', (event) => {
-    self.skipWaiting();
-});
+self.addEventListener('install', (e) => self.skipWaiting());
+self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
 
-self.addEventListener('activate', (event) => {
-    event.waitUntil(clients.claim());
-});
-
-// O segredo: o SW precisa responder para o navegador manter o contexto de "App"
-self.addEventListener('fetch', (event) => {
-    event.respondWith(fetch(event.request));
+self.addEventListener('fetch', (e) => {
+  // Não faz cache de nada, apenas permite a passagem para não quebrar sites externos
+  e.respondWith(fetch(e.request));
 });
