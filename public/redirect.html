@@ -2,46 +2,72 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <title>PWA-ize</title>
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-family: sans-serif; }
-        .loader { border: 3px solid #333; border-top: 3px solid #fff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
-    <div id="loader" class="loader"></div>
-    <div id="message" style="display:none;"></div>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Carregando...</title>
     <script>
-        // Registra o SW para "validar" o PWA instalado
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
-        }
-
         const params = new URLSearchParams(window.location.search);
         const targetUrl = params.get("url");
 
         if (targetUrl) {
             try {
-                const finalUrl = new URL(targetUrl).href;
-                // Timeout de 100ms para o navegador processar o estado standalone antes de sair
-                setTimeout(() => {
-                    window.location.replace(finalUrl);
-                }, 100);
+                const urlObj = new URL(targetUrl);
+                const siteName = urlObj.hostname.replace('www.', '');
+                document.title = siteName; // Define o nome que vai aparecer no ícone
+
+                // GERANDO MANIFESTO DINÂMICO PARA CADA SITE
+                const dynamicManifest = {
+                    "name": siteName,
+                    "short_name": siteName,
+                    "start_url": window.location.href, // Abre o redirecionador já com o parâmetro
+                    "scope": "/", 
+                    "display": "standalone",
+                    "display_override": ["window-controls-overlay", "standalone"],
+                    "background_color": "#000000",
+                    "theme_color": "#000000",
+                    "icons": [{
+                        "src": "https://www.google.com/s2/favicons?sz=128&domain=" + urlObj.hostname,
+                        "sizes": "128x128",
+                        "type": "image/png"
+                    }]
+                };
+
+                const blob = new Blob([JSON.stringify(dynamicManifest)], {type: 'application/json'});
+                const manifestURL = URL.createObjectURL(blob);
+                const link = document.createElement('link');
+                link.rel = 'manifest';
+                link.href = manifestURL;
+                document.head.appendChild(link);
+
+                // Se já estiver instalado (modo standalone), redireciona direto
+                if (window.matchMedia('(display-mode: standalone)').matches) {
+                    window.location.replace(targetUrl);
+                }
             } catch (e) {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('message').style.display = 'block';
-                document.getElementById('message').innerText = "URL Inválida";
+                console.error("Erro na URL");
             }
-        } else {
-            window.location.replace('shortcuts.html');
         }
+
+        // Registrar SW para habilitar instalação
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js');
+        }
+    </script>
+    <style>
+        body { background: #000; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; margin: 0; }
+        .btn { margin-top: 20px; padding: 12px 24px; background: #fff; color: #000; border-radius: 8px; text-decoration: none; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+    <div id="status">Preparando PWA para:</div>
+    <div id="domain" style="font-weight: bold; font-size: 1.2em; margin-top: 10px;"></div>
+    <p style="font-size: 0.8em; color: #888; margin-top: 20px;">Clique nos três pontos e em "Instalar App"</p>
+    
+    <script>
+        const domainDiv = document.getElementById('domain');
+        if (targetUrl) domainDiv.innerText = new URL(targetUrl).hostname;
+
+        // Se o usuário clicar na página após instalar, ele vai pro site
+        window.onclick = () => { if(targetUrl) window.location.replace(targetUrl); };
     </script>
 </body>
 </html>
