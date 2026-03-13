@@ -1,55 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    <meta name="color-scheme" content="dark light">
-    <title>Redirecting...</title>
+    <title>PWA-ize</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html, body {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        background: #000;
-      }
-      /* Esconde qualquer barra residual */
-      .status-bar, .minimal-ui, header, nav, footer,
-      [class*="status"], [class*="nav"], [class*="header"],
-      .browser-ui, .chrome-bar {
-        display: none !important;
-      }
-      #message {
-        color: #fff;
-        font-family: sans-serif;
-        padding: 20px;
-        text-align: center;
-      }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-family: sans-serif; }
+        .loader { border: 3px solid #333; border-top: 3px solid #fff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
-  </head>
+</head>
+<body>
+    <div id="loader" class="loader"></div>
+    <div id="message" style="display:none;"></div>
 
-  <body>
-    <div id="message">Loading...</div>
-    <script type="text/javascript">
-      const params = new URLSearchParams(window.location.search);
-      try {
-        const url = params.get("url");
-        if (!url) throw new Error("URL vazia");
-        
-        // Usa replace pra não criar histórico
-        window.location.replace(new URL(url).href);
-      } catch (error) {
-        document.getElementById("message").innerHTML = 
-          `Erro: ${error.message}<br><br>${window.location.href}`;
-      }
+    <script>
+        // Registra o SW para "validar" o PWA instalado
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js');
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const targetUrl = params.get("url");
+
+        if (targetUrl) {
+            try {
+                const finalUrl = new URL(targetUrl).href;
+                // Timeout de 100ms para o navegador processar o estado standalone antes de sair
+                setTimeout(() => {
+                    window.location.replace(finalUrl);
+                }, 100);
+            } catch (e) {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('message').style.display = 'block';
+                document.getElementById('message').innerText = "URL Inválida";
+            }
+        } else {
+            window.location.replace('shortcuts.html');
+        }
     </script>
-  </body>
+</body>
 </html>
