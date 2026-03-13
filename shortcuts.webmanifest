@@ -1,11 +1,11 @@
 {
-  "name": "PWA-ize Engine",
-  "short_name": "PWA-ize",
-  "start_url": "/pwa-ize/index.html",
+  "name": "PWA-ize Shortcuts",
+  "short_name": "Shortcuts",
+  "start_url": "shortcuts.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#111528",
   "icons": [
-    { "src": "icons/splash-192.svg", "sizes": "192x192", "type": "image/svg+xml" }
+    { "src": "icons/splash-192.svg", "sizes": "192x192" },
+    { "src": "icons/splash-512.svg", "sizes": "512x512" }
   ]
 }
