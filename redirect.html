@@ -1,38 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
+    <meta name="color-scheme" content="dark light">
     <title>Redirecting...</title>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { height: 100%; width: 100%; overflow: hidden; background: #000; }
-      #message { color: #fff; font-family: sans-serif; padding: 20px; text-align: center; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html, body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+      /* Esconde qualquer barra residual */
+      .status-bar, .minimal-ui, header, nav, footer,
+      [class*="status"], [class*="nav"], [class*="header"],
+      .browser-ui, .chrome-bar {
+        display: none !important;
+      }
+      #message {
+        color: #fff;
+        font-family: sans-serif;
+        padding: 20px;
+        text-align: center;
+      }
     </style>
-</head>
-<body>
+  </head>
+
+  <body>
     <div id="message">Loading...</div>
     <script type="text/javascript">
-      // Registra o SW para garantir que o botão de instalar apareça se o browser pedir
-      if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('./sw.js');
-      }
-
       const params = new URLSearchParams(window.location.search);
       try {
         const url = params.get("url");
         if (!url) throw new Error("URL vazia");
         
-        // O replace original que você usava
+        // Usa replace pra não criar histórico
         window.location.replace(new URL(url).href);
       } catch (error) {
         document.getElementById("message").innerHTML = 
           `Erro: ${error.message}<br><br>${window.location.href}`;
       }
     </script>
-</body>
+  </body>
 </html>
